@@ -13,43 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  ******************************************************************************/
-package org.mini2Dx.lockprovider;
+package org.mini2Dx.lockprovider.jvm;
 
-import java.util.concurrent.locks.ReentrantReadWriteLock;
+import org.mini2Dx.lockprovider.ReentrantLock;
 
 /**
- * Default implementation of {@link ReadWriteLock} for JVM environments
+ * Default implementation of {@link ReentrantLock} for JVM environments
  */
-public class JvmReadWriteLock implements ReadWriteLock {
-	private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+public class JvmReentrantLock implements ReentrantLock {
+	private final java.util.concurrent.locks.ReentrantLock lock = new java.util.concurrent.locks.ReentrantLock();
 
 	@Override
-	public void lockRead() {
-		lock.readLock().lock();
+	public boolean isHeldByCurrentThread() {
+		return lock.isHeldByCurrentThread();
 	}
 
 	@Override
-	public boolean tryLockRead() {
-		return lock.readLock().tryLock();
+	public void lock() {
+		lock.lock();
 	}
 
 	@Override
-	public void unlockRead() {
-		lock.readLock().unlock();
+	public boolean tryLock() {
+		return lock.tryLock();
 	}
 
 	@Override
-	public void lockWrite() {
-		lock.writeLock().lock();
-	}
-
-	@Override
-	public boolean tryLockWrite() {
-		return lock.writeLock().tryLock();
-	}
-
-	@Override
-	public void unlockWrite() {
-		lock.writeLock().unlock();
+	public void unlock() {
+		lock.unlock();
 	}
 }
